@@ -1,26 +1,28 @@
+version: '3'
+
 services:
   frontend:
     build:
-      context: ./frontend
+      context: ./frontend  # Assure-toi que le Dockerfile est bien dans ce répertoire
     ports:
-      - "8081:80"  # Expose the React app on port 80
+      - "8081:80"  # Expose l'application React sur le port 8081
     depends_on:
-      - backend
+      - backend  # Le frontend dépend du backend
     networks:
       - app-network
 
   backend:
     build:
-      context: ./backend
+      context: ./backend  # Assure-toi que le Dockerfile est bien dans ce répertoire
     ports:
-      - "5000:5000"  # Expose the backend API on port 5000
+      - "5000:5000"  # Expose l'API du backend sur le port 5000
     environment:
       - DB_HOST=db
       - DB_USER=root
       - DB_PASSWORD=rootpassword
       - DB_NAME=vehicles_db
     depends_on:
-      - db
+      - db  # Le backend dépend de la base de données MySQL
     networks:
       - app-network
 
@@ -30,9 +32,9 @@ services:
       MYSQL_ROOT_PASSWORD: rootpassword
       MYSQL_DATABASE: vehicles_db
     volumes:
-      - db-data:/var/lib/mysql
+      - db-data:/var/lib/mysql  # Persiste les données MySQL
     ports:
-      - "3307:3306"  # Expose MySQL on port 3306
+      - "3307:3306"  # Expose MySQL sur le port 3307
     networks:
       - app-network
 
